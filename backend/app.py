@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from lexico import get_all_tokens
+from lexico import get_all_tokens, contar_repeticiones
 from combined import get_analyzer
 
 app = Flask(__name__)
@@ -10,6 +10,7 @@ CORS(app)  # Permite CORS para todas las rutas
 def analyze():
     code = request.json['code']
     language = request.json['language']  # Nuevo parámetro para el lenguaje
+    
     
     # Análisis léxico
     tokens = get_all_tokens(code)
@@ -26,6 +27,9 @@ def analyze():
         }
         for t in tokens
     ]
+    
+    # Contar repeticiones
+    repeticiones = contar_repeticiones(tokens)
 
     # Análisis sintáctico
     analyzer = get_analyzer(language)
