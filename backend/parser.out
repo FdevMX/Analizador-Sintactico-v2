@@ -1,374 +1,659 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
+Unused terminals:
+
+    DOT
+    FOR
+    INCREMENT
+    LESS_EQUAL
+    OUT
+    PRINTLN
+    SYSTEM
+
 Grammar
 
-Rule 0     S' -> for_loop
-Rule 1     for_loop -> FOR LPAREN initialization condition increment RPAREN LBRACE statement RBRACE
-Rule 2     initialization -> INT IDENTIFIER EQUALS NUMBER SEMICOLON
-Rule 3     initialization -> IDENTIFIER EQUALS NUMBER SEMICOLON
-Rule 4     condition -> IDENTIFIER LESS_EQUAL NUMBER SEMICOLON
-Rule 5     increment -> IDENTIFIER INCREMENT
-Rule 6     increment -> INCREMENT IDENTIFIER
-Rule 7     statement -> SYSTEM DOT OUT DOT PRINTLN LPAREN STRING PLUS IDENTIFIER RPAREN SEMICOLON
-Rule 8     initialization -> INT NUMBER EQUALS NUMBER SEMICOLON
-Rule 9     increment -> IDENTIFIER PLUS
+Rule 0     S' -> programa
+Rule 1     programa -> PROGRAMA IDENTIFIER LPAREN RPAREN LBRACE declaraciones instrucciones RBRACE
+Rule 2     declaraciones -> declaraciones declaracion
+Rule 3     declaraciones -> declaracion
+Rule 4     declaraciones -> empty
+Rule 5     declaracion -> INT IDENTIFIER lista_identificadores SEMICOLON
+Rule 6     lista_identificadores -> COMA IDENTIFIER lista_identificadores
+Rule 7     lista_identificadores -> empty
+Rule 8     instrucciones -> instrucciones instruccion
+Rule 9     instrucciones -> instruccion
+Rule 10    instrucciones -> empty
+Rule 11    instruccion -> lectura
+Rule 12    instruccion -> asignacion
+Rule 13    instruccion -> impresion
+Rule 14    instruccion -> fin
+Rule 15    lectura -> READ IDENTIFIER SEMICOLON
+Rule 16    asignacion -> IDENTIFIER EQUALS expresion SEMICOLON
+Rule 17    expresion -> IDENTIFIER PLUS IDENTIFIER
+Rule 18    expresion -> IDENTIFIER
+Rule 19    expresion -> NUMBER
+Rule 20    impresion -> PRINTF LPAREN STRING RPAREN SEMICOLON
+Rule 21    fin -> END SEMICOLON
+Rule 22    empty -> <empty>
+Rule 23    lectura -> READ error SEMICOLON
+Rule 24    asignacion -> IDENTIFIER EQUALS error SEMICOLON
+Rule 25    impresion -> PRINTF LPAREN error RPAREN SEMICOLON
+Rule 26    fin -> END error
 
 Terminals, with rules where they appear
 
-DOT                  : 7 7
-EQUALS               : 2 3 8
-FOR                  : 1
-IDENTIFIER           : 2 3 4 5 6 7 9
-INCREMENT            : 5 6
-INT                  : 2 8
+COMA                 : 6
+DOT                  : 
+END                  : 21 26
+EQUALS               : 16 24
+FOR                  : 
+IDENTIFIER           : 1 5 6 15 16 17 17 18 24
+INCREMENT            : 
+INT                  : 5
 LBRACE               : 1
-LESS_EQUAL           : 4
-LPAREN               : 1 7
-NUMBER               : 2 3 4 8 8
-OUT                  : 7
-PLUS                 : 7 9
-PRINTLN              : 7
+LESS_EQUAL           : 
+LPAREN               : 1 20 25
+NUMBER               : 19
+OUT                  : 
+PLUS                 : 17
+PRINTF               : 20 25
+PRINTLN              : 
+PROGRAMA             : 1
 RBRACE               : 1
-RPAREN               : 1 7
-SEMICOLON            : 2 3 4 7 8
-STRING               : 7
-SYSTEM               : 7
-error                : 
+READ                 : 15 23
+RPAREN               : 1 20 25
+SEMICOLON            : 5 15 16 20 21 23 24 25
+STRING               : 20
+SYSTEM               : 
+error                : 23 24 25 26
 
 Nonterminals, with rules where they appear
 
-condition            : 1
-for_loop             : 0
-increment            : 1
-initialization       : 1
-statement            : 1
+asignacion           : 12
+declaracion          : 2 3
+declaraciones        : 1 2
+empty                : 4 7 10
+expresion            : 16
+fin                  : 14
+impresion            : 13
+instruccion          : 8 9
+instrucciones        : 1 8
+lectura              : 11
+lista_identificadores : 5 6
+programa             : 0
 
 Parsing method: LALR
 
 state 0
 
-    (0) S' -> . for_loop
-    (1) for_loop -> . FOR LPAREN initialization condition increment RPAREN LBRACE statement RBRACE
+    (0) S' -> . programa
+    (1) programa -> . PROGRAMA IDENTIFIER LPAREN RPAREN LBRACE declaraciones instrucciones RBRACE
 
-    FOR             shift and go to state 2
+    PROGRAMA        shift and go to state 2
 
-    for_loop                       shift and go to state 1
+    programa                       shift and go to state 1
 
 state 1
 
-    (0) S' -> for_loop .
+    (0) S' -> programa .
 
 
 
 state 2
 
-    (1) for_loop -> FOR . LPAREN initialization condition increment RPAREN LBRACE statement RBRACE
+    (1) programa -> PROGRAMA . IDENTIFIER LPAREN RPAREN LBRACE declaraciones instrucciones RBRACE
 
-    LPAREN          shift and go to state 3
+    IDENTIFIER      shift and go to state 3
 
 
 state 3
 
-    (1) for_loop -> FOR LPAREN . initialization condition increment RPAREN LBRACE statement RBRACE
-    (2) initialization -> . INT IDENTIFIER EQUALS NUMBER SEMICOLON
-    (3) initialization -> . IDENTIFIER EQUALS NUMBER SEMICOLON
-    (8) initialization -> . INT NUMBER EQUALS NUMBER SEMICOLON
+    (1) programa -> PROGRAMA IDENTIFIER . LPAREN RPAREN LBRACE declaraciones instrucciones RBRACE
 
-    INT             shift and go to state 5
-    IDENTIFIER      shift and go to state 6
+    LPAREN          shift and go to state 4
 
-    initialization                 shift and go to state 4
 
 state 4
 
-    (1) for_loop -> FOR LPAREN initialization . condition increment RPAREN LBRACE statement RBRACE
-    (4) condition -> . IDENTIFIER LESS_EQUAL NUMBER SEMICOLON
+    (1) programa -> PROGRAMA IDENTIFIER LPAREN . RPAREN LBRACE declaraciones instrucciones RBRACE
 
-    IDENTIFIER      shift and go to state 8
+    RPAREN          shift and go to state 5
 
-    condition                      shift and go to state 7
 
 state 5
 
-    (2) initialization -> INT . IDENTIFIER EQUALS NUMBER SEMICOLON
-    (8) initialization -> INT . NUMBER EQUALS NUMBER SEMICOLON
+    (1) programa -> PROGRAMA IDENTIFIER LPAREN RPAREN . LBRACE declaraciones instrucciones RBRACE
 
-    IDENTIFIER      shift and go to state 9
-    NUMBER          shift and go to state 10
+    LBRACE          shift and go to state 6
 
 
 state 6
 
-    (3) initialization -> IDENTIFIER . EQUALS NUMBER SEMICOLON
+    (1) programa -> PROGRAMA IDENTIFIER LPAREN RPAREN LBRACE . declaraciones instrucciones RBRACE
+    (2) declaraciones -> . declaraciones declaracion
+    (3) declaraciones -> . declaracion
+    (4) declaraciones -> . empty
+    (5) declaracion -> . INT IDENTIFIER lista_identificadores SEMICOLON
+    (22) empty -> .
 
-    EQUALS          shift and go to state 11
+  ! shift/reduce conflict for INT resolved as shift
+    INT             shift and go to state 10
+    READ            reduce using rule 22 (empty -> .)
+    IDENTIFIER      reduce using rule 22 (empty -> .)
+    PRINTF          reduce using rule 22 (empty -> .)
+    END             reduce using rule 22 (empty -> .)
+    RBRACE          reduce using rule 22 (empty -> .)
 
+  ! INT             [ reduce using rule 22 (empty -> .) ]
+
+    declaraciones                  shift and go to state 7
+    declaracion                    shift and go to state 8
+    empty                          shift and go to state 9
 
 state 7
 
-    (1) for_loop -> FOR LPAREN initialization condition . increment RPAREN LBRACE statement RBRACE
-    (5) increment -> . IDENTIFIER INCREMENT
-    (6) increment -> . INCREMENT IDENTIFIER
-    (9) increment -> . IDENTIFIER PLUS
+    (1) programa -> PROGRAMA IDENTIFIER LPAREN RPAREN LBRACE declaraciones . instrucciones RBRACE
+    (2) declaraciones -> declaraciones . declaracion
+    (8) instrucciones -> . instrucciones instruccion
+    (9) instrucciones -> . instruccion
+    (10) instrucciones -> . empty
+    (5) declaracion -> . INT IDENTIFIER lista_identificadores SEMICOLON
+    (11) instruccion -> . lectura
+    (12) instruccion -> . asignacion
+    (13) instruccion -> . impresion
+    (14) instruccion -> . fin
+    (22) empty -> .
+    (15) lectura -> . READ IDENTIFIER SEMICOLON
+    (23) lectura -> . READ error SEMICOLON
+    (16) asignacion -> . IDENTIFIER EQUALS expresion SEMICOLON
+    (24) asignacion -> . IDENTIFIER EQUALS error SEMICOLON
+    (20) impresion -> . PRINTF LPAREN STRING RPAREN SEMICOLON
+    (25) impresion -> . PRINTF LPAREN error RPAREN SEMICOLON
+    (21) fin -> . END SEMICOLON
+    (26) fin -> . END error
 
-    IDENTIFIER      shift and go to state 13
-    INCREMENT       shift and go to state 14
+  ! shift/reduce conflict for READ resolved as shift
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
+  ! shift/reduce conflict for PRINTF resolved as shift
+  ! shift/reduce conflict for END resolved as shift
+    INT             shift and go to state 10
+    RBRACE          reduce using rule 22 (empty -> .)
+    READ            shift and go to state 20
+    IDENTIFIER      shift and go to state 11
+    PRINTF          shift and go to state 21
+    END             shift and go to state 22
 
-    increment                      shift and go to state 12
+  ! READ            [ reduce using rule 22 (empty -> .) ]
+  ! IDENTIFIER      [ reduce using rule 22 (empty -> .) ]
+  ! PRINTF          [ reduce using rule 22 (empty -> .) ]
+  ! END             [ reduce using rule 22 (empty -> .) ]
+
+    instrucciones                  shift and go to state 12
+    declaracion                    shift and go to state 13
+    instruccion                    shift and go to state 14
+    empty                          shift and go to state 15
+    lectura                        shift and go to state 16
+    asignacion                     shift and go to state 17
+    impresion                      shift and go to state 18
+    fin                            shift and go to state 19
 
 state 8
 
-    (4) condition -> IDENTIFIER . LESS_EQUAL NUMBER SEMICOLON
+    (3) declaraciones -> declaracion .
 
-    LESS_EQUAL      shift and go to state 15
+    INT             reduce using rule 3 (declaraciones -> declaracion .)
+    READ            reduce using rule 3 (declaraciones -> declaracion .)
+    IDENTIFIER      reduce using rule 3 (declaraciones -> declaracion .)
+    PRINTF          reduce using rule 3 (declaraciones -> declaracion .)
+    END             reduce using rule 3 (declaraciones -> declaracion .)
+    RBRACE          reduce using rule 3 (declaraciones -> declaracion .)
 
 
 state 9
 
-    (2) initialization -> INT IDENTIFIER . EQUALS NUMBER SEMICOLON
+    (4) declaraciones -> empty .
 
-    EQUALS          shift and go to state 16
+    INT             reduce using rule 4 (declaraciones -> empty .)
+    READ            reduce using rule 4 (declaraciones -> empty .)
+    IDENTIFIER      reduce using rule 4 (declaraciones -> empty .)
+    PRINTF          reduce using rule 4 (declaraciones -> empty .)
+    END             reduce using rule 4 (declaraciones -> empty .)
+    RBRACE          reduce using rule 4 (declaraciones -> empty .)
 
 
 state 10
 
-    (8) initialization -> INT NUMBER . EQUALS NUMBER SEMICOLON
+    (5) declaracion -> INT . IDENTIFIER lista_identificadores SEMICOLON
 
-    EQUALS          shift and go to state 17
+    IDENTIFIER      shift and go to state 23
 
 
 state 11
 
-    (3) initialization -> IDENTIFIER EQUALS . NUMBER SEMICOLON
+    (16) asignacion -> IDENTIFIER . EQUALS expresion SEMICOLON
+    (24) asignacion -> IDENTIFIER . EQUALS error SEMICOLON
 
-    NUMBER          shift and go to state 18
+    EQUALS          shift and go to state 24
 
 
 state 12
 
-    (1) for_loop -> FOR LPAREN initialization condition increment . RPAREN LBRACE statement RBRACE
+    (1) programa -> PROGRAMA IDENTIFIER LPAREN RPAREN LBRACE declaraciones instrucciones . RBRACE
+    (8) instrucciones -> instrucciones . instruccion
+    (11) instruccion -> . lectura
+    (12) instruccion -> . asignacion
+    (13) instruccion -> . impresion
+    (14) instruccion -> . fin
+    (15) lectura -> . READ IDENTIFIER SEMICOLON
+    (23) lectura -> . READ error SEMICOLON
+    (16) asignacion -> . IDENTIFIER EQUALS expresion SEMICOLON
+    (24) asignacion -> . IDENTIFIER EQUALS error SEMICOLON
+    (20) impresion -> . PRINTF LPAREN STRING RPAREN SEMICOLON
+    (25) impresion -> . PRINTF LPAREN error RPAREN SEMICOLON
+    (21) fin -> . END SEMICOLON
+    (26) fin -> . END error
 
-    RPAREN          shift and go to state 19
+    RBRACE          shift and go to state 25
+    READ            shift and go to state 20
+    IDENTIFIER      shift and go to state 11
+    PRINTF          shift and go to state 21
+    END             shift and go to state 22
 
+    instruccion                    shift and go to state 26
+    lectura                        shift and go to state 16
+    asignacion                     shift and go to state 17
+    impresion                      shift and go to state 18
+    fin                            shift and go to state 19
 
 state 13
 
-    (5) increment -> IDENTIFIER . INCREMENT
-    (9) increment -> IDENTIFIER . PLUS
+    (2) declaraciones -> declaraciones declaracion .
 
-    INCREMENT       shift and go to state 20
-    PLUS            shift and go to state 21
+    INT             reduce using rule 2 (declaraciones -> declaraciones declaracion .)
+    READ            reduce using rule 2 (declaraciones -> declaraciones declaracion .)
+    IDENTIFIER      reduce using rule 2 (declaraciones -> declaraciones declaracion .)
+    PRINTF          reduce using rule 2 (declaraciones -> declaraciones declaracion .)
+    END             reduce using rule 2 (declaraciones -> declaraciones declaracion .)
+    RBRACE          reduce using rule 2 (declaraciones -> declaraciones declaracion .)
 
 
 state 14
 
-    (6) increment -> INCREMENT . IDENTIFIER
+    (9) instrucciones -> instruccion .
 
-    IDENTIFIER      shift and go to state 22
+    RBRACE          reduce using rule 9 (instrucciones -> instruccion .)
+    READ            reduce using rule 9 (instrucciones -> instruccion .)
+    IDENTIFIER      reduce using rule 9 (instrucciones -> instruccion .)
+    PRINTF          reduce using rule 9 (instrucciones -> instruccion .)
+    END             reduce using rule 9 (instrucciones -> instruccion .)
 
 
 state 15
 
-    (4) condition -> IDENTIFIER LESS_EQUAL . NUMBER SEMICOLON
+    (10) instrucciones -> empty .
 
-    NUMBER          shift and go to state 23
+    RBRACE          reduce using rule 10 (instrucciones -> empty .)
+    READ            reduce using rule 10 (instrucciones -> empty .)
+    IDENTIFIER      reduce using rule 10 (instrucciones -> empty .)
+    PRINTF          reduce using rule 10 (instrucciones -> empty .)
+    END             reduce using rule 10 (instrucciones -> empty .)
 
 
 state 16
 
-    (2) initialization -> INT IDENTIFIER EQUALS . NUMBER SEMICOLON
+    (11) instruccion -> lectura .
 
-    NUMBER          shift and go to state 24
+    RBRACE          reduce using rule 11 (instruccion -> lectura .)
+    READ            reduce using rule 11 (instruccion -> lectura .)
+    IDENTIFIER      reduce using rule 11 (instruccion -> lectura .)
+    PRINTF          reduce using rule 11 (instruccion -> lectura .)
+    END             reduce using rule 11 (instruccion -> lectura .)
 
 
 state 17
 
-    (8) initialization -> INT NUMBER EQUALS . NUMBER SEMICOLON
+    (12) instruccion -> asignacion .
 
-    NUMBER          shift and go to state 25
+    RBRACE          reduce using rule 12 (instruccion -> asignacion .)
+    READ            reduce using rule 12 (instruccion -> asignacion .)
+    IDENTIFIER      reduce using rule 12 (instruccion -> asignacion .)
+    PRINTF          reduce using rule 12 (instruccion -> asignacion .)
+    END             reduce using rule 12 (instruccion -> asignacion .)
 
 
 state 18
 
-    (3) initialization -> IDENTIFIER EQUALS NUMBER . SEMICOLON
+    (13) instruccion -> impresion .
 
-    SEMICOLON       shift and go to state 26
+    RBRACE          reduce using rule 13 (instruccion -> impresion .)
+    READ            reduce using rule 13 (instruccion -> impresion .)
+    IDENTIFIER      reduce using rule 13 (instruccion -> impresion .)
+    PRINTF          reduce using rule 13 (instruccion -> impresion .)
+    END             reduce using rule 13 (instruccion -> impresion .)
 
 
 state 19
 
-    (1) for_loop -> FOR LPAREN initialization condition increment RPAREN . LBRACE statement RBRACE
+    (14) instruccion -> fin .
 
-    LBRACE          shift and go to state 27
+    RBRACE          reduce using rule 14 (instruccion -> fin .)
+    READ            reduce using rule 14 (instruccion -> fin .)
+    IDENTIFIER      reduce using rule 14 (instruccion -> fin .)
+    PRINTF          reduce using rule 14 (instruccion -> fin .)
+    END             reduce using rule 14 (instruccion -> fin .)
 
 
 state 20
 
-    (5) increment -> IDENTIFIER INCREMENT .
+    (15) lectura -> READ . IDENTIFIER SEMICOLON
+    (23) lectura -> READ . error SEMICOLON
 
-    RPAREN          reduce using rule 5 (increment -> IDENTIFIER INCREMENT .)
+    IDENTIFIER      shift and go to state 27
+    error           shift and go to state 28
 
 
 state 21
 
-    (9) increment -> IDENTIFIER PLUS .
+    (20) impresion -> PRINTF . LPAREN STRING RPAREN SEMICOLON
+    (25) impresion -> PRINTF . LPAREN error RPAREN SEMICOLON
 
-    RPAREN          reduce using rule 9 (increment -> IDENTIFIER PLUS .)
+    LPAREN          shift and go to state 29
 
 
 state 22
 
-    (6) increment -> INCREMENT IDENTIFIER .
+    (21) fin -> END . SEMICOLON
+    (26) fin -> END . error
 
-    RPAREN          reduce using rule 6 (increment -> INCREMENT IDENTIFIER .)
+    SEMICOLON       shift and go to state 30
+    error           shift and go to state 31
 
 
 state 23
 
-    (4) condition -> IDENTIFIER LESS_EQUAL NUMBER . SEMICOLON
+    (5) declaracion -> INT IDENTIFIER . lista_identificadores SEMICOLON
+    (6) lista_identificadores -> . COMA IDENTIFIER lista_identificadores
+    (7) lista_identificadores -> . empty
+    (22) empty -> .
 
-    SEMICOLON       shift and go to state 28
+    COMA            shift and go to state 33
+    SEMICOLON       reduce using rule 22 (empty -> .)
 
+    lista_identificadores          shift and go to state 32
+    empty                          shift and go to state 34
 
 state 24
 
-    (2) initialization -> INT IDENTIFIER EQUALS NUMBER . SEMICOLON
+    (16) asignacion -> IDENTIFIER EQUALS . expresion SEMICOLON
+    (24) asignacion -> IDENTIFIER EQUALS . error SEMICOLON
+    (17) expresion -> . IDENTIFIER PLUS IDENTIFIER
+    (18) expresion -> . IDENTIFIER
+    (19) expresion -> . NUMBER
 
-    SEMICOLON       shift and go to state 29
+    error           shift and go to state 37
+    IDENTIFIER      shift and go to state 35
+    NUMBER          shift and go to state 38
 
+    expresion                      shift and go to state 36
 
 state 25
 
-    (8) initialization -> INT NUMBER EQUALS NUMBER . SEMICOLON
+    (1) programa -> PROGRAMA IDENTIFIER LPAREN RPAREN LBRACE declaraciones instrucciones RBRACE .
 
-    SEMICOLON       shift and go to state 30
+    $end            reduce using rule 1 (programa -> PROGRAMA IDENTIFIER LPAREN RPAREN LBRACE declaraciones instrucciones RBRACE .)
 
 
 state 26
 
-    (3) initialization -> IDENTIFIER EQUALS NUMBER SEMICOLON .
+    (8) instrucciones -> instrucciones instruccion .
 
-    IDENTIFIER      reduce using rule 3 (initialization -> IDENTIFIER EQUALS NUMBER SEMICOLON .)
+    RBRACE          reduce using rule 8 (instrucciones -> instrucciones instruccion .)
+    READ            reduce using rule 8 (instrucciones -> instrucciones instruccion .)
+    IDENTIFIER      reduce using rule 8 (instrucciones -> instrucciones instruccion .)
+    PRINTF          reduce using rule 8 (instrucciones -> instrucciones instruccion .)
+    END             reduce using rule 8 (instrucciones -> instrucciones instruccion .)
 
 
 state 27
 
-    (1) for_loop -> FOR LPAREN initialization condition increment RPAREN LBRACE . statement RBRACE
-    (7) statement -> . SYSTEM DOT OUT DOT PRINTLN LPAREN STRING PLUS IDENTIFIER RPAREN SEMICOLON
+    (15) lectura -> READ IDENTIFIER . SEMICOLON
 
-    SYSTEM          shift and go to state 32
+    SEMICOLON       shift and go to state 39
 
-    statement                      shift and go to state 31
 
 state 28
 
-    (4) condition -> IDENTIFIER LESS_EQUAL NUMBER SEMICOLON .
+    (23) lectura -> READ error . SEMICOLON
 
-    IDENTIFIER      reduce using rule 4 (condition -> IDENTIFIER LESS_EQUAL NUMBER SEMICOLON .)
-    INCREMENT       reduce using rule 4 (condition -> IDENTIFIER LESS_EQUAL NUMBER SEMICOLON .)
+    SEMICOLON       shift and go to state 40
 
 
 state 29
 
-    (2) initialization -> INT IDENTIFIER EQUALS NUMBER SEMICOLON .
+    (20) impresion -> PRINTF LPAREN . STRING RPAREN SEMICOLON
+    (25) impresion -> PRINTF LPAREN . error RPAREN SEMICOLON
 
-    IDENTIFIER      reduce using rule 2 (initialization -> INT IDENTIFIER EQUALS NUMBER SEMICOLON .)
+    STRING          shift and go to state 41
+    error           shift and go to state 42
 
 
 state 30
 
-    (8) initialization -> INT NUMBER EQUALS NUMBER SEMICOLON .
+    (21) fin -> END SEMICOLON .
 
-    IDENTIFIER      reduce using rule 8 (initialization -> INT NUMBER EQUALS NUMBER SEMICOLON .)
+    RBRACE          reduce using rule 21 (fin -> END SEMICOLON .)
+    READ            reduce using rule 21 (fin -> END SEMICOLON .)
+    IDENTIFIER      reduce using rule 21 (fin -> END SEMICOLON .)
+    PRINTF          reduce using rule 21 (fin -> END SEMICOLON .)
+    END             reduce using rule 21 (fin -> END SEMICOLON .)
 
 
 state 31
 
-    (1) for_loop -> FOR LPAREN initialization condition increment RPAREN LBRACE statement . RBRACE
+    (26) fin -> END error .
 
-    RBRACE          shift and go to state 33
+    RBRACE          reduce using rule 26 (fin -> END error .)
+    READ            reduce using rule 26 (fin -> END error .)
+    IDENTIFIER      reduce using rule 26 (fin -> END error .)
+    PRINTF          reduce using rule 26 (fin -> END error .)
+    END             reduce using rule 26 (fin -> END error .)
 
 
 state 32
 
-    (7) statement -> SYSTEM . DOT OUT DOT PRINTLN LPAREN STRING PLUS IDENTIFIER RPAREN SEMICOLON
-
-    DOT             shift and go to state 34
-
-
-state 33
-
-    (1) for_loop -> FOR LPAREN initialization condition increment RPAREN LBRACE statement RBRACE .
-
-    $end            reduce using rule 1 (for_loop -> FOR LPAREN initialization condition increment RPAREN LBRACE statement RBRACE .)
-
-
-state 34
-
-    (7) statement -> SYSTEM DOT . OUT DOT PRINTLN LPAREN STRING PLUS IDENTIFIER RPAREN SEMICOLON
-
-    OUT             shift and go to state 35
-
-
-state 35
-
-    (7) statement -> SYSTEM DOT OUT . DOT PRINTLN LPAREN STRING PLUS IDENTIFIER RPAREN SEMICOLON
-
-    DOT             shift and go to state 36
-
-
-state 36
-
-    (7) statement -> SYSTEM DOT OUT DOT . PRINTLN LPAREN STRING PLUS IDENTIFIER RPAREN SEMICOLON
-
-    PRINTLN         shift and go to state 37
-
-
-state 37
-
-    (7) statement -> SYSTEM DOT OUT DOT PRINTLN . LPAREN STRING PLUS IDENTIFIER RPAREN SEMICOLON
-
-    LPAREN          shift and go to state 38
-
-
-state 38
-
-    (7) statement -> SYSTEM DOT OUT DOT PRINTLN LPAREN . STRING PLUS IDENTIFIER RPAREN SEMICOLON
-
-    STRING          shift and go to state 39
-
-
-state 39
-
-    (7) statement -> SYSTEM DOT OUT DOT PRINTLN LPAREN STRING . PLUS IDENTIFIER RPAREN SEMICOLON
-
-    PLUS            shift and go to state 40
-
-
-state 40
-
-    (7) statement -> SYSTEM DOT OUT DOT PRINTLN LPAREN STRING PLUS . IDENTIFIER RPAREN SEMICOLON
-
-    IDENTIFIER      shift and go to state 41
-
-
-state 41
-
-    (7) statement -> SYSTEM DOT OUT DOT PRINTLN LPAREN STRING PLUS IDENTIFIER . RPAREN SEMICOLON
-
-    RPAREN          shift and go to state 42
-
-
-state 42
-
-    (7) statement -> SYSTEM DOT OUT DOT PRINTLN LPAREN STRING PLUS IDENTIFIER RPAREN . SEMICOLON
+    (5) declaracion -> INT IDENTIFIER lista_identificadores . SEMICOLON
 
     SEMICOLON       shift and go to state 43
 
 
+state 33
+
+    (6) lista_identificadores -> COMA . IDENTIFIER lista_identificadores
+
+    IDENTIFIER      shift and go to state 44
+
+
+state 34
+
+    (7) lista_identificadores -> empty .
+
+    SEMICOLON       reduce using rule 7 (lista_identificadores -> empty .)
+
+
+state 35
+
+    (17) expresion -> IDENTIFIER . PLUS IDENTIFIER
+    (18) expresion -> IDENTIFIER .
+
+    PLUS            shift and go to state 45
+    SEMICOLON       reduce using rule 18 (expresion -> IDENTIFIER .)
+
+
+state 36
+
+    (16) asignacion -> IDENTIFIER EQUALS expresion . SEMICOLON
+
+    SEMICOLON       shift and go to state 46
+
+
+state 37
+
+    (24) asignacion -> IDENTIFIER EQUALS error . SEMICOLON
+
+    SEMICOLON       shift and go to state 47
+
+
+state 38
+
+    (19) expresion -> NUMBER .
+
+    SEMICOLON       reduce using rule 19 (expresion -> NUMBER .)
+
+
+state 39
+
+    (15) lectura -> READ IDENTIFIER SEMICOLON .
+
+    RBRACE          reduce using rule 15 (lectura -> READ IDENTIFIER SEMICOLON .)
+    READ            reduce using rule 15 (lectura -> READ IDENTIFIER SEMICOLON .)
+    IDENTIFIER      reduce using rule 15 (lectura -> READ IDENTIFIER SEMICOLON .)
+    PRINTF          reduce using rule 15 (lectura -> READ IDENTIFIER SEMICOLON .)
+    END             reduce using rule 15 (lectura -> READ IDENTIFIER SEMICOLON .)
+
+
+state 40
+
+    (23) lectura -> READ error SEMICOLON .
+
+    RBRACE          reduce using rule 23 (lectura -> READ error SEMICOLON .)
+    READ            reduce using rule 23 (lectura -> READ error SEMICOLON .)
+    IDENTIFIER      reduce using rule 23 (lectura -> READ error SEMICOLON .)
+    PRINTF          reduce using rule 23 (lectura -> READ error SEMICOLON .)
+    END             reduce using rule 23 (lectura -> READ error SEMICOLON .)
+
+
+state 41
+
+    (20) impresion -> PRINTF LPAREN STRING . RPAREN SEMICOLON
+
+    RPAREN          shift and go to state 48
+
+
+state 42
+
+    (25) impresion -> PRINTF LPAREN error . RPAREN SEMICOLON
+
+    RPAREN          shift and go to state 49
+
+
 state 43
 
-    (7) statement -> SYSTEM DOT OUT DOT PRINTLN LPAREN STRING PLUS IDENTIFIER RPAREN SEMICOLON .
+    (5) declaracion -> INT IDENTIFIER lista_identificadores SEMICOLON .
 
-    RBRACE          reduce using rule 7 (statement -> SYSTEM DOT OUT DOT PRINTLN LPAREN STRING PLUS IDENTIFIER RPAREN SEMICOLON .)
+    INT             reduce using rule 5 (declaracion -> INT IDENTIFIER lista_identificadores SEMICOLON .)
+    READ            reduce using rule 5 (declaracion -> INT IDENTIFIER lista_identificadores SEMICOLON .)
+    IDENTIFIER      reduce using rule 5 (declaracion -> INT IDENTIFIER lista_identificadores SEMICOLON .)
+    PRINTF          reduce using rule 5 (declaracion -> INT IDENTIFIER lista_identificadores SEMICOLON .)
+    END             reduce using rule 5 (declaracion -> INT IDENTIFIER lista_identificadores SEMICOLON .)
+    RBRACE          reduce using rule 5 (declaracion -> INT IDENTIFIER lista_identificadores SEMICOLON .)
 
+
+state 44
+
+    (6) lista_identificadores -> COMA IDENTIFIER . lista_identificadores
+    (6) lista_identificadores -> . COMA IDENTIFIER lista_identificadores
+    (7) lista_identificadores -> . empty
+    (22) empty -> .
+
+    COMA            shift and go to state 33
+    SEMICOLON       reduce using rule 22 (empty -> .)
+
+    lista_identificadores          shift and go to state 50
+    empty                          shift and go to state 34
+
+state 45
+
+    (17) expresion -> IDENTIFIER PLUS . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 51
+
+
+state 46
+
+    (16) asignacion -> IDENTIFIER EQUALS expresion SEMICOLON .
+
+    RBRACE          reduce using rule 16 (asignacion -> IDENTIFIER EQUALS expresion SEMICOLON .)
+    READ            reduce using rule 16 (asignacion -> IDENTIFIER EQUALS expresion SEMICOLON .)
+    IDENTIFIER      reduce using rule 16 (asignacion -> IDENTIFIER EQUALS expresion SEMICOLON .)
+    PRINTF          reduce using rule 16 (asignacion -> IDENTIFIER EQUALS expresion SEMICOLON .)
+    END             reduce using rule 16 (asignacion -> IDENTIFIER EQUALS expresion SEMICOLON .)
+
+
+state 47
+
+    (24) asignacion -> IDENTIFIER EQUALS error SEMICOLON .
+
+    RBRACE          reduce using rule 24 (asignacion -> IDENTIFIER EQUALS error SEMICOLON .)
+    READ            reduce using rule 24 (asignacion -> IDENTIFIER EQUALS error SEMICOLON .)
+    IDENTIFIER      reduce using rule 24 (asignacion -> IDENTIFIER EQUALS error SEMICOLON .)
+    PRINTF          reduce using rule 24 (asignacion -> IDENTIFIER EQUALS error SEMICOLON .)
+    END             reduce using rule 24 (asignacion -> IDENTIFIER EQUALS error SEMICOLON .)
+
+
+state 48
+
+    (20) impresion -> PRINTF LPAREN STRING RPAREN . SEMICOLON
+
+    SEMICOLON       shift and go to state 52
+
+
+state 49
+
+    (25) impresion -> PRINTF LPAREN error RPAREN . SEMICOLON
+
+    SEMICOLON       shift and go to state 53
+
+
+state 50
+
+    (6) lista_identificadores -> COMA IDENTIFIER lista_identificadores .
+
+    SEMICOLON       reduce using rule 6 (lista_identificadores -> COMA IDENTIFIER lista_identificadores .)
+
+
+state 51
+
+    (17) expresion -> IDENTIFIER PLUS IDENTIFIER .
+
+    SEMICOLON       reduce using rule 17 (expresion -> IDENTIFIER PLUS IDENTIFIER .)
+
+
+state 52
+
+    (20) impresion -> PRINTF LPAREN STRING RPAREN SEMICOLON .
+
+    RBRACE          reduce using rule 20 (impresion -> PRINTF LPAREN STRING RPAREN SEMICOLON .)
+    READ            reduce using rule 20 (impresion -> PRINTF LPAREN STRING RPAREN SEMICOLON .)
+    IDENTIFIER      reduce using rule 20 (impresion -> PRINTF LPAREN STRING RPAREN SEMICOLON .)
+    PRINTF          reduce using rule 20 (impresion -> PRINTF LPAREN STRING RPAREN SEMICOLON .)
+    END             reduce using rule 20 (impresion -> PRINTF LPAREN STRING RPAREN SEMICOLON .)
+
+
+state 53
+
+    (25) impresion -> PRINTF LPAREN error RPAREN SEMICOLON .
+
+    RBRACE          reduce using rule 25 (impresion -> PRINTF LPAREN error RPAREN SEMICOLON .)
+    READ            reduce using rule 25 (impresion -> PRINTF LPAREN error RPAREN SEMICOLON .)
+    IDENTIFIER      reduce using rule 25 (impresion -> PRINTF LPAREN error RPAREN SEMICOLON .)
+    PRINTF          reduce using rule 25 (impresion -> PRINTF LPAREN error RPAREN SEMICOLON .)
+    END             reduce using rule 25 (impresion -> PRINTF LPAREN error RPAREN SEMICOLON .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for INT in state 6 resolved as shift
+WARNING: shift/reduce conflict for READ in state 7 resolved as shift
+WARNING: shift/reduce conflict for IDENTIFIER in state 7 resolved as shift
+WARNING: shift/reduce conflict for PRINTF in state 7 resolved as shift
+WARNING: shift/reduce conflict for END in state 7 resolved as shift

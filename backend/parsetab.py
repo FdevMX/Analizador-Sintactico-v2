@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'DOT EQUALS FOR IDENTIFIER INCREMENT INT LBRACE LESS_EQUAL LPAREN NUMBER OUT PLUS PRINTLN RBRACE RPAREN SEMICOLON STRING SYSTEMfor_loop : FOR LPAREN initialization condition increment RPAREN LBRACE statement RBRACEinitialization : INT IDENTIFIER EQUALS NUMBER SEMICOLON\n                      | IDENTIFIER EQUALS NUMBER SEMICOLONcondition : IDENTIFIER LESS_EQUAL NUMBER SEMICOLONincrement : IDENTIFIER INCREMENT\n                 | INCREMENT IDENTIFIERstatement : SYSTEM DOT OUT DOT PRINTLN LPAREN STRING PLUS IDENTIFIER RPAREN SEMICOLONinitialization : INT NUMBER EQUALS NUMBER SEMICOLONincrement : IDENTIFIER PLUS'
+_lr_signature = 'COMA DOT END EQUALS FOR IDENTIFIER INCREMENT INT LBRACE LESS_EQUAL LPAREN NUMBER OUT PLUS PRINTF PRINTLN PROGRAMA RBRACE READ RPAREN SEMICOLON STRING SYSTEMprograma : PROGRAMA IDENTIFIER LPAREN RPAREN LBRACE declaraciones instrucciones RBRACEdeclaraciones : declaraciones declaracion\n                         | declaracion\n                         | emptydeclaracion : INT IDENTIFIER lista_identificadores SEMICOLONlista_identificadores : COMA IDENTIFIER lista_identificadores\n                                 | emptyinstrucciones : instrucciones instruccion\n                         | instruccion\n                         | emptyinstruccion : lectura\n                       | asignacion\n                       | impresion\n                       | finlectura : READ IDENTIFIER SEMICOLONasignacion : IDENTIFIER EQUALS expresion SEMICOLONexpresion : IDENTIFIER PLUS IDENTIFIER\n                     | IDENTIFIER\n                     | NUMBERimpresion : PRINTF LPAREN STRING RPAREN SEMICOLONfin : END SEMICOLONempty :lectura : READ error SEMICOLONasignacion : IDENTIFIER EQUALS error SEMICOLONimpresion : PRINTF LPAREN error RPAREN SEMICOLONfin : END error'
     
-_lr_action_items = {'FOR':([0,],[2,]),'$end':([1,33,],[0,-1,]),'LPAREN':([2,37,],[3,38,]),'INT':([3,],[5,]),'IDENTIFIER':([3,4,5,7,14,26,28,29,30,40,],[6,8,9,13,22,-3,-4,-2,-8,41,]),'NUMBER':([5,11,15,16,17,],[10,18,23,24,25,]),'EQUALS':([6,9,10,],[11,16,17,]),'INCREMENT':([7,13,28,],[14,20,-4,]),'LESS_EQUAL':([8,],[15,]),'RPAREN':([12,20,21,22,41,],[19,-5,-9,-6,42,]),'PLUS':([13,39,],[21,40,]),'SEMICOLON':([18,23,24,25,42,],[26,28,29,30,43,]),'LBRACE':([19,],[27,]),'SYSTEM':([27,],[32,]),'RBRACE':([31,43,],[33,-7,]),'DOT':([32,35,],[34,36,]),'OUT':([34,],[35,]),'PRINTLN':([36,],[37,]),'STRING':([38,],[39,]),}
+_lr_action_items = {'PROGRAMA':([0,],[2,]),'$end':([1,25,],[0,-1,]),'IDENTIFIER':([2,6,7,8,9,10,12,13,14,15,16,17,18,19,20,24,26,30,31,33,39,40,43,45,46,47,52,53,],[3,-22,11,-3,-4,23,11,-2,-9,-10,-11,-12,-13,-14,27,35,-8,-21,-26,44,-15,-23,-5,51,-16,-24,-20,-25,]),'LPAREN':([3,21,],[4,29,]),'RPAREN':([4,41,42,],[5,48,49,]),'LBRACE':([5,],[6,]),'INT':([6,7,8,9,13,43,],[10,10,-3,-4,-2,-5,]),'READ':([6,7,8,9,12,13,14,15,16,17,18,19,26,30,31,39,40,43,46,47,52,53,],[-22,20,-3,-4,20,-2,-9,-10,-11,-12,-13,-14,-8,-21,-26,-15,-23,-5,-16,-24,-20,-25,]),'PRINTF':([6,7,8,9,12,13,14,15,16,17,18,19,26,30,31,39,40,43,46,47,52,53,],[-22,21,-3,-4,21,-2,-9,-10,-11,-12,-13,-14,-8,-21,-26,-15,-23,-5,-16,-24,-20,-25,]),'END':([6,7,8,9,12,13,14,15,16,17,18,19,26,30,31,39,40,43,46,47,52,53,],[-22,22,-3,-4,22,-2,-9,-10,-11,-12,-13,-14,-8,-21,-26,-15,-23,-5,-16,-24,-20,-25,]),'RBRACE':([6,7,8,9,12,13,14,15,16,17,18,19,26,30,31,39,40,43,46,47,52,53,],[-22,-22,-3,-4,25,-2,-9,-10,-11,-12,-13,-14,-8,-21,-26,-15,-23,-5,-16,-24,-20,-25,]),'EQUALS':([11,],[24,]),'error':([20,22,24,29,],[28,31,37,42,]),'SEMICOLON':([22,23,27,28,32,34,35,36,37,38,44,48,49,50,51,],[30,-22,39,40,43,-7,-18,46,47,-19,-22,52,53,-6,-17,]),'COMA':([23,44,],[33,33,]),'NUMBER':([24,],[38,]),'STRING':([29,],[41,]),'PLUS':([35,],[45,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'for_loop':([0,],[1,]),'initialization':([3,],[4,]),'condition':([4,],[7,]),'increment':([7,],[12,]),'statement':([27,],[31,]),}
+_lr_goto_items = {'programa':([0,],[1,]),'declaraciones':([6,],[7,]),'declaracion':([6,7,],[8,13,]),'empty':([6,7,23,44,],[9,15,34,34,]),'instrucciones':([7,],[12,]),'instruccion':([7,12,],[14,26,]),'lectura':([7,12,],[16,16,]),'asignacion':([7,12,],[17,17,]),'impresion':([7,12,],[18,18,]),'fin':([7,12,],[19,19,]),'lista_identificadores':([23,44,],[32,50,]),'expresion':([24,],[36,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,14 +26,31 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> for_loop","S'",1,None,None,None),
-  ('for_loop -> FOR LPAREN initialization condition increment RPAREN LBRACE statement RBRACE','for_loop',9,'p_for_loop','app.py',9),
-  ('initialization -> INT IDENTIFIER EQUALS NUMBER SEMICOLON','initialization',5,'p_initialization','app.py',14),
-  ('initialization -> IDENTIFIER EQUALS NUMBER SEMICOLON','initialization',4,'p_initialization','app.py',15),
-  ('condition -> IDENTIFIER LESS_EQUAL NUMBER SEMICOLON','condition',4,'p_condition','app.py',18),
-  ('increment -> IDENTIFIER INCREMENT','increment',2,'p_increment','app.py',21),
-  ('increment -> INCREMENT IDENTIFIER','increment',2,'p_increment','app.py',22),
-  ('statement -> SYSTEM DOT OUT DOT PRINTLN LPAREN STRING PLUS IDENTIFIER RPAREN SEMICOLON','statement',11,'p_statement','app.py',25),
-  ('initialization -> INT NUMBER EQUALS NUMBER SEMICOLON','initialization',5,'p_initialization_error','app.py',29),
-  ('increment -> IDENTIFIER PLUS','increment',2,'p_increment_error','app.py',33),
+  ("S' -> programa","S'",1,None,None,None),
+  ('programa -> PROGRAMA IDENTIFIER LPAREN RPAREN LBRACE declaraciones instrucciones RBRACE','programa',8,'p_programa','combined.py',39),
+  ('declaraciones -> declaraciones declaracion','declaraciones',2,'p_declaraciones','combined.py',45),
+  ('declaraciones -> declaracion','declaraciones',1,'p_declaraciones','combined.py',46),
+  ('declaraciones -> empty','declaraciones',1,'p_declaraciones','combined.py',47),
+  ('declaracion -> INT IDENTIFIER lista_identificadores SEMICOLON','declaracion',4,'p_declaracion','combined.py',54),
+  ('lista_identificadores -> COMA IDENTIFIER lista_identificadores','lista_identificadores',3,'p_lista_identificadores','combined.py',58),
+  ('lista_identificadores -> empty','lista_identificadores',1,'p_lista_identificadores','combined.py',59),
+  ('instrucciones -> instrucciones instruccion','instrucciones',2,'p_instrucciones','combined.py',66),
+  ('instrucciones -> instruccion','instrucciones',1,'p_instrucciones','combined.py',67),
+  ('instrucciones -> empty','instrucciones',1,'p_instrucciones','combined.py',68),
+  ('instruccion -> lectura','instruccion',1,'p_instruccion','combined.py',75),
+  ('instruccion -> asignacion','instruccion',1,'p_instruccion','combined.py',76),
+  ('instruccion -> impresion','instruccion',1,'p_instruccion','combined.py',77),
+  ('instruccion -> fin','instruccion',1,'p_instruccion','combined.py',78),
+  ('lectura -> READ IDENTIFIER SEMICOLON','lectura',3,'p_lectura','combined.py',82),
+  ('asignacion -> IDENTIFIER EQUALS expresion SEMICOLON','asignacion',4,'p_asignacion','combined.py',86),
+  ('expresion -> IDENTIFIER PLUS IDENTIFIER','expresion',3,'p_expresion','combined.py',90),
+  ('expresion -> IDENTIFIER','expresion',1,'p_expresion','combined.py',91),
+  ('expresion -> NUMBER','expresion',1,'p_expresion','combined.py',92),
+  ('impresion -> PRINTF LPAREN STRING RPAREN SEMICOLON','impresion',5,'p_impresion','combined.py',99),
+  ('fin -> END SEMICOLON','fin',2,'p_fin','combined.py',103),
+  ('empty -> <empty>','empty',0,'p_empty','combined.py',107),
+  ('lectura -> READ error SEMICOLON','lectura',3,'p_lectura_error','combined.py',111),
+  ('asignacion -> IDENTIFIER EQUALS error SEMICOLON','asignacion',4,'p_asignacion_error','combined.py',115),
+  ('impresion -> PRINTF LPAREN error RPAREN SEMICOLON','impresion',5,'p_impresion_error','combined.py',119),
+  ('fin -> END error','fin',2,'p_fin_error','combined.py',123),
 ]
