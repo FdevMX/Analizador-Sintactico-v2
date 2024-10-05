@@ -107,13 +107,25 @@ class PseudocodeAnalyzer(SyntacticAnalyzer):
         '''empty :'''
         pass
 
+    def p_declaracion_error(self, p):
+        '''declaracion : INT NUMBER lista_identificadores SEMICOLON'''
+        self.errors.append(f"Error en la línea {p.lineno(2)}: No se puede usar un número como nombre de variable")
+
     def p_lectura_error(self, p):
-        '''lectura : READ error SEMICOLON'''
-        self.errors.append(f"Error en la línea {p.lineno(1)}: Se esperaba un identificador después de 'read'")
+        '''lectura : READ NUMBER SEMICOLON
+                | READ error SEMICOLON'''
+        if len(p) == 4 and isinstance(p[2], int):
+            self.errors.append(f"Error en la línea {p.lineno(2)}: No se puede usar un número como identificador en 'read'")
+        else:
+            self.errors.append(f"Error en la línea {p.lineno(1)}: Se esperaba un identificador después de 'read'")
 
     def p_asignacion_error(self, p):
-        '''asignacion : IDENTIFIER EQUALS error SEMICOLON'''
-        self.errors.append(f"Error en la línea {p.lineno(1)}: Expresión inválida en la asignación")
+        '''asignacion : NUMBER EQUALS expresion SEMICOLON
+                    | IDENTIFIER EQUALS error SEMICOLON'''
+        if len(p) == 5 and isinstance(p[1], int):
+            self.errors.append(f"Error en la línea {p.lineno(2)}: No se puede usar un número como nombre de variable en la asignación")
+        else:
+            self.errors.append(f"Error en la línea {p.lineno(1)}: Expresión inválida en la asignación")
 
     def p_impresion_error(self, p):
         '''impresion : PRINTF LPAREN error RPAREN SEMICOLON'''
@@ -136,6 +148,32 @@ class PseudocodeAnalyzer(SyntacticAnalyzer):
                 self.errors.append(f"Error en la línea {i}: Falta punto y coma al final de la instrucción 'read'")
             elif '=' in line and not line.endswith(';'):
                 self.errors.append(f"Error en la línea {i}: Falta punto y coma al final de la asignación")
+        
+        self.check_identifiers(lines)
+    
+    def check_identifiers(self, lines):
+        int_identifiers = []
+        read_identifiers = []
+        sum_operands = []
+
+        for line in lines:
+            line = line.strip()
+            if line.startswith('int '):
+                int_identifiers = [identifier.strip() for identifier in line[4:].strip(';').split(',')]
+            elif line.startswith('read '):
+                read_identifiers.append(line[5:].strip(';'))
+            elif '=' in line and '+' in line:
+                sum_operands = [operand.strip() for operand in line.split('=')[1].strip(';').split('+')]
+
+        # Check if all read identifiers are in int identifiers
+        for identifier in read_identifiers:
+            if identifier not in int_identifiers:
+                self.errors.append(f"Error: Identificador '{identifier}' en la instrucción 'read' no declarado en 'int'")
+
+        # Check if all sum operands are in int identifiers
+        for operand in sum_operands:
+            if operand not in int_identifiers:
+                self.errors.append(f"Error: Identificador '{operand}' en la operación de suma no declarado en 'int'")
 
 class JavaForLoopAnalyzer(SyntacticAnalyzer):
     def p_for_loop(self, p):
