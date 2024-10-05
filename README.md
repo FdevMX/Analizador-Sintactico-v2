@@ -3,7 +3,7 @@
 Este proyecto es un analizador sintáctico que utiliza Next.js para el frontend y un backend en Flask. El propósito del proyecto es analizar sintácticamente y lexicamente el código proporcionado por el usuario.
 
 ### Enlace a la Aplicación Desplegada
-[analizador-sintactico-bcol.vercel.app](https://analizador-sintactico-bcol.vercel.app)
+[analizador-sintactico-v2-frontend.vercel.app](https://analizador-sintactico-v2-frontend.vercel.app)
 
 ## Tabla de Contenidos
 
