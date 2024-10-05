@@ -4,7 +4,8 @@ import ply.lex as lex
 tokens = [
     'FOR', 'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'SEMICOLON',
     'INT', 'IDENTIFIER', 'NUMBER', 'EQUALS', 'LESS_EQUAL', 'INCREMENT',
-    'STRING', 'PLUS', 'DOT', 'SYSTEM', 'OUT', 'PRINTLN'
+    'STRING', 'PLUS', 'DOT', 'SYSTEM', 'OUT', 'PRINTLN', 'COMA', 
+    'PRINTF', 'PROGRAMA', 'END', 'READ'
 ]
 
 # Palabras reservadas
@@ -13,7 +14,12 @@ reserved = {
     'int': 'INT',
     'System': 'SYSTEM',
     'out': 'OUT',
-    'println': 'PRINTLN'
+    'println': 'PRINTLN',
+    'int': 'INT',
+    'end': 'END',
+    'printf': 'PRINTF',
+    'programa': 'PROGRAMA',
+    'read': 'READ'
 }
 
 # Reglas para tokens simples
@@ -27,6 +33,7 @@ t_LESS_EQUAL = r'<='
 t_INCREMENT = r'\+\+'
 t_PLUS = r'\+'
 t_DOT = r'\.'
+t_COMA = r','
 
 # Reglas para tokens más complejos
 def t_IDENTIFIER(t):
@@ -69,5 +76,12 @@ def get_all_tokens(code):
         tok = lexer.token()
         if not tok:
             break
-        tokens.append((tok.type, tok.value, tok.lineno))
+        
+        wordReserv = "x" if tok.type in reserved.values() else ""
+        identifier = "x" if tok.type == "IDENTIFIER" else ""
+        cadena = "x" if tok.type == "STRING" else ""
+        numero = "x" if tok.type == "NUMBER" else ""
+        simbolo = "x" if tok.type in ["LPAREN", "RPAREN", "LBRACE", "RBRACE", "SEMICOLON", "EQUALS", "LESS_EQUAL", "INCREMENT", "PLUS", "DOT", "COMA"] else ""
+        
+        tokens.append((tok.type, tok.value, wordReserv, identifier, cadena, numero, simbolo, tok.lineno))
     return tokens
