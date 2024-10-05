@@ -218,31 +218,3 @@ def get_analyzer(language):
         return JavaForLoopAnalyzer()
     else:
         raise ValueError("Lenguaje no soportado. Elija 'pseudocode' o 'java'.")
-
-# Ejemplo de uso
-if __name__ == "__main__":
-    pseudocode = """
-    programa suma(){
-        int a,b,c;
-        read a;
-        read b;
-        c = a + b;
-        printf ("la suma es");
-        end;
-    }
-    """
-
-    java_code = """
-    for (int i = 0; i <= 5; i++) {
-        System.out.println("Iteration: " + i);
-    }
-    """
-
-    pseudocode_analyzer = get_analyzer('pseudocode')
-    java_analyzer = get_analyzer('java')
-
-    print("Analizando pseudocódigo:")
-    print(pseudocode_analyzer.parse(pseudocode))
-
-    print("\nAnalizando bucle for de Java:")
-    print(java_analyzer.parse(java_code))
