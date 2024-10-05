@@ -74,7 +74,7 @@ const CodeAnalyzerComponent = () => {
     <div className={`min-h-screen bg-white dark:bg-dark-gray text-black dark:text-white transition-colors duration-300`}>
       <header className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
         <a 
-          href="https://github.com/FdevMX/Analizador-Sintactico" 
+          href="https://github.com/FdevMX/Analizador-Sintactico-v2" 
           target="_blank" 
           rel="noopener noreferrer" 
           className="text-black dark:text-white hover:bg-gray-200 dark:hover:bg-gray-800 p-3 rounded-full w-20 h-18 transition-all duration-300 flex items-center justify-center"
