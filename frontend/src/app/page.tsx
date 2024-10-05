@@ -5,11 +5,96 @@ import { Moon, Sun, Github } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-const CodeAnalyzerComponent = () => {
+interface Token {
+  token: string;
+  lexeme: string;
+  line: number;
+  wordReserv?: boolean;
+  identifier?: boolean;
+  cadena?: boolean;
+  numero?: boolean;
+  simbolo?: boolean;
+}
+
+interface Repeticiones {
+  wordReserv: number;
+  identifier: number;
+  cadena: number;
+  numero: number;
+  simbolo: number;
+}
+
+const TokenTable: React.FC<{ tokens: Token[], repeticiones: Repeticiones }> = ({ tokens, repeticiones }) => (
+  <div>
+    <div className="mb-4">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[200px]">Token</TableHead>
+            <TableHead className="w-[200px]">Lexema</TableHead>
+            <TableHead className="w-[50px]">Palabra Reservada</TableHead>
+            <TableHead className="w-[50px]">Identificador</TableHead>
+            <TableHead className="w-[50px]">Cadena</TableHead>
+            <TableHead className="w-[50px]">Numero</TableHead>
+            <TableHead className="w-[50px]">Simbolo</TableHead>
+            <TableHead className="w-[50px]">Línea</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {tokens.map((token, index) => (
+            <TableRow key={index}>
+              <TableCell className="w-[200px]">{token.token}</TableCell>
+              <TableCell className="w-[200px]">{token.lexeme}</TableCell>
+              <TableCell className="w-[50px]">{token.wordReserv ? 'x' : ''}</TableCell>
+              <TableCell className="w-[50px]">{token.identifier ? 'x' : ''}</TableCell>
+              <TableCell className="w-[50px]">{token.cadena ? 'x' : ''}</TableCell>
+              <TableCell className="w-[50px]">{token.numero ? 'x' : ''}</TableCell>
+              <TableCell className="w-[50px]">{token.simbolo ? 'x' : ''}</TableCell>
+              <TableCell className="w-[50px]">{token.line}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+
+    {/* Mini tabla para mostrar las cantidades */}
+    <div>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[200px]">Token</TableHead>
+            <TableHead className="w-[200px]">Lexema</TableHead>
+            <TableHead className="w-[50px]">Palabra Reservada</TableHead>
+            <TableHead className="w-[50px]">Identificador</TableHead>
+            <TableHead className="w-[50px]">Cadena</TableHead>
+            <TableHead className="w-[50px]">Numero</TableHead>
+            <TableHead className="w-[50px]">Simbolo</TableHead>
+            <TableHead className="w-[50px]">Linea</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell className="w-[200px]">null</TableCell>
+            <TableCell className="w-[200px]">null</TableCell>
+            <TableCell className="w-[50px]">{repeticiones.wordReserv}</TableCell>
+            <TableCell className="w-[50px]">{repeticiones.identifier}</TableCell>
+            <TableCell className="w-[50px]">{repeticiones.cadena}</TableCell>
+            <TableCell className="w-[50px]">{repeticiones.numero}</TableCell>
+            <TableCell className="w-[50px]">{repeticiones.simbolo}</TableCell>
+            <TableCell className="w-[50px]">null</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </div>
+  </div>
+);
+
+const CodeAnalyzerComponent: React.FC = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [code, setCode] = useState('');
   const [output, setOutput] = useState('');
-  const [tokens, setTokens] = useState<Array<{ token: string, lexeme: string, line: number, wordReserv?: string, identifier?: string, cadena?: string, numero?: string, simbolo?: string }>>([]);
+  const [tokens, setTokens] = useState<Token[]>([]);
+  const [repeticiones, setRepeticiones] = useState<Repeticiones>({ wordReserv: 0, identifier: 0, cadena: 0, numero: 0, simbolo: 0 });
   const [language, setLanguage] = useState('pseudocode');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const lineNumbersRef = useRef<HTMLDivElement>(null);
@@ -41,6 +126,18 @@ const CodeAnalyzerComponent = () => {
     return () => window.removeEventListener('resize', updateLineNumbers);
   }, [code]);
 
+  const contarRepeticiones = (tokens: Token[]): Repeticiones => {
+    const repeticiones: Repeticiones = { wordReserv: 0, identifier: 0, cadena: 0, numero: 0, simbolo: 0 };
+    tokens.forEach(token => {
+      if (token.wordReserv) repeticiones.wordReserv++;
+      if (token.identifier) repeticiones.identifier++;
+      if (token.cadena) repeticiones.cadena++;
+      if (token.numero) repeticiones.numero++;
+      if (token.simbolo) repeticiones.simbolo++;
+    });
+    return repeticiones;
+  };
+
   const analyzeCode = async () => {
     const codeContent = code.trim();
     if (codeContent === '') {
@@ -57,6 +154,7 @@ const CodeAnalyzerComponent = () => {
       });
       const data = await response.json();
       setTokens(data.tokens);
+      setRepeticiones(contarRepeticiones(data.tokens));
       setOutput(data.errors.join('\n') || 'No se encontraron errores');
     } catch (error) {
       console.error('Error:', error);
@@ -68,6 +166,7 @@ const CodeAnalyzerComponent = () => {
     setCode('');
     setOutput('');
     setTokens([]);
+    setRepeticiones({ wordReserv: 0, identifier: 0, cadena: 0, numero: 0, simbolo: 0 });
   };
 
   return (
@@ -134,35 +233,7 @@ const CodeAnalyzerComponent = () => {
           <Button variant="outline" onClick={clearAll}>Limpiar</Button>
         </div>
         
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Token</TableHead>
-              <TableHead>Lexema</TableHead>
-              <TableHead className="w-[50px]">Palabra Reservada</TableHead> {/* Ancho de 150px */}
-              <TableHead className="w-[50px]">Identificador</TableHead> {/* Ancho de 120px */}
-              <TableHead className="w-[110px]">Cadena</TableHead> {/* Ancho de 200px */}
-              <TableHead className="w-[110px]">Numero</TableHead> {/* Ancho de 100px */}
-              <TableHead className="w-[110px]">Simbolo</TableHead> {/* Ancho de 80px */}
-              <TableHead className="w-[110px]">Línea</TableHead> {/* Ancho de 70px */}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {tokens.map((token, index) => (
-              <TableRow key={index}>
-                <TableCell>{token.token}</TableCell>
-                <TableCell>{token.lexeme}</TableCell>
-                <TableCell className="w-[50px]">{token.wordReserv}</TableCell> {/* Igualar ancho */}
-                <TableCell className="w-[50px]">{token.identifier}</TableCell> {/* Igualar ancho */}
-                <TableCell className="w-[110px]">{token.cadena}</TableCell> {/* Igualar ancho */}
-                <TableCell className="w-[110px]">{token.numero}</TableCell> {/* Igualar ancho */}
-                <TableCell className="w-[110px]">{token.simbolo}</TableCell> {/* Igualar ancho */}
-                <TableCell className="w-[110px]">{token.line}</TableCell> {/* Igualar ancho */}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-
+        <TokenTable tokens={tokens} repeticiones={repeticiones} />
       </main>
     </div>
   );
