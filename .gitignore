@@ -397,6 +397,18 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
+.venv
+..venv
+./venv
+
+.__pycache__
+./__pycache__/
+
+*.venv
+*.venv/
+
+*__pycache__
+*__pycache__/
 
 *.vscode/
 *.vscodeignore
