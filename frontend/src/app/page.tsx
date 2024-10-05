@@ -1,88 +1,85 @@
 "use client"
 
-import { useState, useRef, useEffect } from 'react'
-import { Moon, Sun, Github } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import React, { useState, useRef, useEffect } from 'react';
+import { Moon, Sun, Github } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-export default function Component() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light')
-  const [code, setCode] = useState('')
-  const [output, setOutput] = useState('')
-  const [tokens, setTokens] = useState<Array<{ token: string, lexeme: string, line: number }>>([])
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const lineNumbersRef = useRef<HTMLDivElement>(null)
+const CodeAnalyzerComponent = () => {
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [code, setCode] = useState('');
+  const [output, setOutput] = useState('');
+  const [tokens, setTokens] = useState<Array<{ token: string, lexeme: string, line: number, wordReserv?: string, identifier?: string, cadena?: string, numero?: string, simbolo?: string }>>([]);
+  const [language, setLanguage] = useState('pseudocode');
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const lineNumbersRef = useRef<HTMLDivElement>(null);
 
   const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light'
-    setTheme(newTheme)
-    document.documentElement.classList.toggle('dark', newTheme === 'dark')
-    localStorage.setItem('theme', newTheme)
-  }
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    document.documentElement.classList.toggle('dark', newTheme === 'dark');
+    localStorage.setItem('theme', newTheme);
+  };
 
-  const analyzeCode = async () => {
-    const codeContent = textareaRef.current?.value?.trim() || ''; // Obtener el contenido del textarea y eliminar espacios en blanco al principio y al final
-
-    if (codeContent === '') {
-      setOutput('Error: Ingrese su codigo.');
-      return; // Salir de la función si el código está vacío
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    if (savedTheme) {
+      setTheme(savedTheme);
+      document.documentElement.classList.toggle('dark', savedTheme === 'dark');
     }
 
+    const updateLineNumbers = () => {
+      if (textareaRef.current && lineNumbersRef.current) {
+        const lineCount = textareaRef.current.value.split('\n').length;
+        const lineNumbers = Array(lineCount).fill(0).map((_, i) => i + 1).join('\n');
+        lineNumbersRef.current.innerText = lineNumbers;
+      }
+    };
+
+    updateLineNumbers();
+    window.addEventListener('resize', updateLineNumbers);
+    return () => window.removeEventListener('resize', updateLineNumbers);
+  }, [code]);
+
+  const analyzeCode = async () => {
+    const codeContent = code.trim();
+    if (codeContent === '') {
+      setOutput('Error: Ingrese su código.');
+      return;
+    }
     try {
       const response = await fetch('/analyze', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ code : codeContent }),
-      })
-      const data = await response.json()
-      setTokens(data.tokens)
-      setOutput(data.errors.join('\n') || 'No se encontraron errores')
+        body: JSON.stringify({ code: codeContent, language }),
+      });
+      const data = await response.json();
+      setTokens(data.tokens);
+      setOutput(data.errors.join('\n') || 'No se encontraron errores');
     } catch (error) {
-      console.error('Error:', error)
-      setOutput('Error al analizar el código')
+      console.error('Error:', error);
+      setOutput('Error al analizar el código');
     }
-  }
+  };
 
   const clearAll = () => {
-    setCode('')
-    setOutput('')
-    setTokens([])
-  }
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null
-    if (savedTheme) {
-      setTheme(savedTheme)
-      document.documentElement.classList.toggle('dark', savedTheme === 'dark')
-    }
-
-    const updateLineNumbers = () => {
-      if (textareaRef.current && lineNumbersRef.current) {
-        const lineCount = textareaRef.current.value.split('\n').length
-        const lineNumbers = Array(lineCount).fill(0).map((_, i) => i + 1).join('\n')
-        lineNumbersRef.current.innerText = lineNumbers
-      }
-    }
-
-    updateLineNumbers()
-    window.addEventListener('resize', updateLineNumbers)
-    return () => window.removeEventListener('resize', updateLineNumbers)
-  }, [code])
-
-  // ... (rest of your existing functions)
+    setCode('');
+    setOutput('');
+    setTokens([]);
+  };
 
   return (
     <div className={`min-h-screen bg-white dark:bg-dark-gray text-black dark:text-white transition-colors duration-300`}>
       <header className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
         <a 
-        href="https://github.com/FdevMX/Analizador-Sintactico" 
-        target="_blank" 
-        rel="noopener noreferrer" 
-        className="text-black dark:text-white hover:bg-gray-200 dark:hover:bg-gray-800 p-3 rounded-full w-20 h-18 transition-all duration-300 flex items-center justify-center"
+          href="https://github.com/FdevMX/Analizador-Sintactico" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="text-black dark:text-white hover:bg-gray-200 dark:hover:bg-gray-800 p-3 rounded-full w-20 h-18 transition-all duration-300 flex items-center justify-center"
         >
-          <Github className="h6- w-6" />
+          <Github className="h-6 w-6" />
         </a>
         <h1 className="text-2xl font-bold">Analizador</h1>
         <Button 
@@ -95,6 +92,17 @@ export default function Component() {
       </header>
       
       <main className="container mx-auto p-4 space-y-4">
+        <div className="mb-4">
+          <select
+            className="p-2 bg-gray-100 dark:bg-gray-800 text-black dark:text-white rounded-lg"
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+          >
+            <option value="pseudocode">Pseudocódigo</option>
+            <option value="java">Java (For Loop)</option>
+          </select>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="relative font-mono text-sm">
             <div
@@ -131,7 +139,12 @@ export default function Component() {
             <TableRow>
               <TableHead>Token</TableHead>
               <TableHead>Lexema</TableHead>
-              <TableHead>Línea</TableHead>
+              <TableHead className="w-[50px]">Palabra Reservada</TableHead> {/* Ancho de 150px */}
+              <TableHead className="w-[50px]">Identificador</TableHead> {/* Ancho de 120px */}
+              <TableHead className="w-[110px]">Cadena</TableHead> {/* Ancho de 200px */}
+              <TableHead className="w-[110px]">Numero</TableHead> {/* Ancho de 100px */}
+              <TableHead className="w-[110px]">Simbolo</TableHead> {/* Ancho de 80px */}
+              <TableHead className="w-[110px]">Línea</TableHead> {/* Ancho de 70px */}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -139,12 +152,20 @@ export default function Component() {
               <TableRow key={index}>
                 <TableCell>{token.token}</TableCell>
                 <TableCell>{token.lexeme}</TableCell>
-                <TableCell>{token.line}</TableCell>
+                <TableCell className="w-[50px]">{token.wordReserv}</TableCell> {/* Igualar ancho */}
+                <TableCell className="w-[50px]">{token.identifier}</TableCell> {/* Igualar ancho */}
+                <TableCell className="w-[110px]">{token.cadena}</TableCell> {/* Igualar ancho */}
+                <TableCell className="w-[110px]">{token.numero}</TableCell> {/* Igualar ancho */}
+                <TableCell className="w-[110px]">{token.simbolo}</TableCell> {/* Igualar ancho */}
+                <TableCell className="w-[110px]">{token.line}</TableCell> {/* Igualar ancho */}
               </TableRow>
             ))}
           </TableBody>
         </Table>
+
       </main>
     </div>
-  )
-}
+  );
+};
+
+export default CodeAnalyzerComponent;
