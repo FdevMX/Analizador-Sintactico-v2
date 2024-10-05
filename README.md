@@ -29,7 +29,7 @@ Sigue estos pasos para configurar el proyecto localmente:
 
 1. Clona el repositorio:
     ```bash
-    git clone https://github.com/FdevMX/Analizador-Sintactico.git
+    git clone https://github.com/FdevMX/Analizador-Sintactico-v2.git
     ```
 2. Navega al directorio del proyecto:
     ```bash
@@ -92,15 +92,21 @@ export default nextConfig;
 Puedes usar el siguiente código para probar el analizador:
 
 ```java
-for (int i = 1; i <= 5; i+) { 
-    System.out.println("El valor de la cifra es: " + i);
+programa suma(){
+  int z,b,c;
+  read a;
+  read b;
+  c = a + b;
+  printf ("la suma es");
+  end;
 }
 ```
 
-Debe darte un mensaje de error como el siguiente:
+Debe darte unos mensajes de error como lo siguiente:
 
 ```
-Error en la línea 1: Incremento incorrecto, use '++' en lugar de '+'
+Error: Identificador 'a' en la instrucción 'read' no declarado en 'int'
+Error: Identificador 'a' en la operación de suma no declarado en 'int'
 ```
 
 ## Capturas de Pantalla
