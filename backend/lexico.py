@@ -85,3 +85,27 @@ def get_all_tokens(code):
         
         tokens.append((tok.type, tok.value, wordReserv, identifier, cadena, numero, simbolo, tok.lineno))
     return tokens
+
+# Función para contar las ocurrencias de cada tipo de token
+def contar_repeticiones(tokens):
+    counts = {
+        "wordReserv": 0,
+        "identifier": 0,
+        "cadena": 0,
+        "numero": 0,
+        "simbolo": 0
+    }
+    
+    for token in tokens:
+        if token[2] == "x":
+            counts["wordReserv"] += 1
+        if token[3] == "x":
+            counts["identifier"] += 1
+        if token[4] == "x":
+            counts["cadena"] += 1
+        if token[5] == "x":
+            counts["numero"] += 1
+        if token[6] == "x":
+            counts["simbolo"] += 1
+    
+    return counts
