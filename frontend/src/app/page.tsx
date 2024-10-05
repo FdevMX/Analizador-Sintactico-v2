@@ -24,7 +24,7 @@ interface Repeticiones {
   simbolo: number;
 }
 
-const TokenTable: React.FC<{ tokens: Token[], repeticiones: Repeticiones }> = ({ tokens, repeticiones }) => (
+const TokenTable: React.FC<{ tokens: Token[], repeticiones: Repeticiones, showMiniTable: boolean  }> = ({ tokens, repeticiones, showMiniTable }) => (
   <div>
     <div className="mb-4">
       <Table>
@@ -58,34 +58,36 @@ const TokenTable: React.FC<{ tokens: Token[], repeticiones: Repeticiones }> = ({
     </div>
 
     {/* Mini tabla para mostrar las cantidades */}
-    <div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[200px]">Token</TableHead>
-            <TableHead className="w-[200px]">Lexema</TableHead>
-            <TableHead className="w-[50px]">Palabra Reservada</TableHead>
-            <TableHead className="w-[50px]">Identificador</TableHead>
-            <TableHead className="w-[50px]">Cadena</TableHead>
-            <TableHead className="w-[50px]">Numero</TableHead>
-            <TableHead className="w-[50px]">Simbolo</TableHead>
-            <TableHead className="w-[50px]">Linea</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow>
-            <TableCell className="w-[200px]">null</TableCell>
-            <TableCell className="w-[200px]">null</TableCell>
-            <TableCell className="w-[50px]">{repeticiones.wordReserv}</TableCell>
-            <TableCell className="w-[50px]">{repeticiones.identifier}</TableCell>
-            <TableCell className="w-[50px]">{repeticiones.cadena}</TableCell>
-            <TableCell className="w-[50px]">{repeticiones.numero}</TableCell>
-            <TableCell className="w-[50px]">{repeticiones.simbolo}</TableCell>
-            <TableCell className="w-[50px]">null</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    </div>
+    {showMiniTable && (
+      <div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[200px]">Token</TableHead>
+              <TableHead className="w-[200px]">Lexema</TableHead>
+              <TableHead className="w-[50px]">Palabra Reservada</TableHead>
+              <TableHead className="w-[50px]">Identificador</TableHead>
+              <TableHead className="w-[50px]">Cadena</TableHead>
+              <TableHead className="w-[50px]">Numero</TableHead>
+              <TableHead className="w-[50px]">Simbolo</TableHead>
+              <TableHead className="w-[50px]">Linea</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow>
+              <TableCell className="w-[200px]">null</TableCell>
+              <TableCell className="w-[200px]">null</TableCell>
+              <TableCell className="w-[50px]">{repeticiones.wordReserv}</TableCell>
+              <TableCell className="w-[50px]">{repeticiones.identifier}</TableCell>
+              <TableCell className="w-[50px]">{repeticiones.cadena}</TableCell>
+              <TableCell className="w-[50px]">{repeticiones.numero}</TableCell>
+              <TableCell className="w-[50px]">{repeticiones.simbolo}</TableCell>
+              <TableCell className="w-[50px]">null</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </div>
+    )}
   </div>
 );
 
@@ -96,6 +98,7 @@ const CodeAnalyzerComponent: React.FC = () => {
   const [tokens, setTokens] = useState<Token[]>([]);
   const [repeticiones, setRepeticiones] = useState<Repeticiones>({ wordReserv: 0, identifier: 0, cadena: 0, numero: 0, simbolo: 0 });
   const [language, setLanguage] = useState('pseudocode');
+  const [showMiniTable, setShowMiniTable] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const lineNumbersRef = useRef<HTMLDivElement>(null);
 
@@ -156,6 +159,7 @@ const CodeAnalyzerComponent: React.FC = () => {
       setTokens(data.tokens);
       setRepeticiones(contarRepeticiones(data.tokens));
       setOutput(data.errors.join('\n') || 'No se encontraron errores');
+      setShowMiniTable(true);
     } catch (error) {
       console.error('Error:', error);
       setOutput('Error al analizar el código');
@@ -167,6 +171,7 @@ const CodeAnalyzerComponent: React.FC = () => {
     setOutput('');
     setTokens([]);
     setRepeticiones({ wordReserv: 0, identifier: 0, cadena: 0, numero: 0, simbolo: 0 });
+    setShowMiniTable(false);
   };
 
   return (
@@ -233,7 +238,7 @@ const CodeAnalyzerComponent: React.FC = () => {
           <Button variant="outline" onClick={clearAll}>Limpiar</Button>
         </div>
         
-        <TokenTable tokens={tokens} repeticiones={repeticiones} />
+        <TokenTable tokens={tokens} repeticiones={repeticiones} showMiniTable={showMiniTable} />
       </main>
     </div>
   );
