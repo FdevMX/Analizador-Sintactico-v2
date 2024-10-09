@@ -2,38 +2,32 @@ import ply.lex as lex
 
 # Lista de nombres de tokens
 tokens = [
-    'FOR', 'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'SEMICOLON',
-    'INT', 'IDENTIFIER', 'NUMBER', 'EQUALS', 'LESS_EQUAL', 'INCREMENT',
-    'STRING', 'PLUS', 'DOT', 'SYSTEM', 'OUT', 'PRINTLN', 'COMA', 
-    'PRINTF', 'PROGRAMA', 'END', 'READ'
+    'INCLUDE', 'IOSTREAM', 'USING', 'NAMESPACE', 'INT', 'MAIN', 'COUT',
+    'STRING', 'RETURN', 'NUMBER', 'IDENTIFIER', 'SEMICOLON', 'LPAREN',
+    'RPAREN', 'LBRACE', 'RBRACE', 'LESS_THAN', 'GREATER_THAN', 'DOUBLE_LESS_THAN'
 ]
 
 # Palabras reservadas
 reserved = {
-    'for': 'FOR',
+    'include': 'INCLUDE',
+    'iostream': 'IOSTREAM',
+    'using': 'USING',
+    'namespace': 'NAMESPACE',
     'int': 'INT',
-    'System': 'SYSTEM',
-    'out': 'OUT',
-    'println': 'PRINTLN',
-    'int': 'INT',
-    'end': 'END',
-    'printf': 'PRINTF',
-    'programa': 'PROGRAMA',
-    'read': 'READ'
+    'main': 'MAIN',
+    'cout': 'COUT',
+    'return': 'RETURN'
 }
 
 # Reglas para tokens simples
+t_SEMICOLON = r';'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_LBRACE = r'\{'
 t_RBRACE = r'\}'
-t_SEMICOLON = r';'
-t_EQUALS = r'='
-t_LESS_EQUAL = r'<='
-t_INCREMENT = r'\+\+'
-t_PLUS = r'\+'
-t_DOT = r'\.'
-t_COMA = r','
+t_LESS_THAN = r'<'
+t_GREATER_THAN = r'>'
+t_DOUBLE_LESS_THAN = r'<<'
 
 # Reglas para tokens más complejos
 def t_IDENTIFIER(t):
@@ -68,7 +62,6 @@ lexer = lex.lex()
 
 # Función para obtener todos los tokens
 def get_all_tokens(code):
-    # Inicializar el número de línea en 1
     lexer.lineno = 1
     lexer.input(code)
     tokens = []
@@ -81,7 +74,7 @@ def get_all_tokens(code):
         identifier = "x" if tok.type == "IDENTIFIER" else ""
         cadena = "x" if tok.type == "STRING" else ""
         numero = "x" if tok.type == "NUMBER" else ""
-        simbolo = "x" if tok.type in ["LPAREN", "RPAREN", "LBRACE", "RBRACE", "SEMICOLON", "EQUALS", "LESS_EQUAL", "INCREMENT", "PLUS", "DOT", "COMA"] else ""
+        simbolo = "x" if tok.type in ["SEMICOLON", "LPAREN", "RPAREN", "LBRACE", "RBRACE", "LESS_THAN", "GREATER_THAN", "DOUBLE_LESS_THAN"] else ""
         
         tokens.append((tok.type, tok.value, wordReserv, identifier, cadena, numero, simbolo, tok.lineno))
     return tokens
