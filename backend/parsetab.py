@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'COMA DOT END EQUALS FOR IDENTIFIER INCREMENT INT LBRACE LESS_EQUAL LPAREN NUMBER OUT PLUS PRINTF PRINTLN PROGRAMA RBRACE READ RPAREN SEMICOLON STRING SYSTEMprograma : PROGRAMA IDENTIFIER LPAREN RPAREN LBRACE declaraciones instrucciones RBRACEdeclaraciones : declaraciones declaracion\n                         | declaracion\n                         | emptydeclaracion : INT IDENTIFIER lista_identificadores SEMICOLONlista_identificadores : COMA IDENTIFIER lista_identificadores\n                                 | emptyinstrucciones : instrucciones instruccion\n                         | instruccion\n                         | emptyinstruccion : lectura\n                       | asignacion\n                       | impresion\n                       | finlectura : READ IDENTIFIER SEMICOLONasignacion : IDENTIFIER EQUALS expresion SEMICOLONexpresion : IDENTIFIER PLUS IDENTIFIER\n                     | IDENTIFIER\n                     | NUMBERimpresion : PRINTF LPAREN STRING RPAREN SEMICOLONfin : END SEMICOLONempty :declaracion : INT NUMBER lista_identificadores SEMICOLONlectura : READ NUMBER SEMICOLON\n                | READ error SEMICOLONasignacion : NUMBER EQUALS expresion SEMICOLON\n                    | IDENTIFIER EQUALS error SEMICOLONimpresion : PRINTF LPAREN error RPAREN SEMICOLONfin : END error'
+_lr_signature = 'COUT DOUBLE_LESS_THAN GREATER_THAN IDENTIFIER INCLUDE INT IOSTREAM LBRACE LESS_THAN LPAREN MAIN NAMESPACE NUMBER RBRACE RETURN RPAREN SEMICOLON STRING USINGprograma : include using funcion_maininclude : INCLUDE LESS_THAN IOSTREAM GREATER_THANusing : USING NAMESPACE IDENTIFIER SEMICOLONfuncion_main : INT MAIN LPAREN RPAREN LBRACE instrucciones RBRACEinstrucciones : instrucciones instruccion\n                         | instruccioninstruccion : impresion\n                       | retornoimpresion : COUT DOUBLE_LESS_THAN STRING SEMICOLONretorno : RETURN NUMBER SEMICOLON'
     
-_lr_action_items = {'PROGRAMA':([0,],[2,]),'$end':([1,27,],[0,-1,]),'IDENTIFIER':([2,6,7,8,9,10,12,13,14,15,17,18,19,20,21,26,28,29,34,35,37,45,46,47,50,52,53,54,55,56,61,62,],[3,-22,11,-3,-4,24,11,-2,-9,-10,-11,-12,-13,-14,30,40,-8,40,-21,-29,51,-15,-24,-25,-5,-23,60,-16,-27,-26,-20,-28,]),'LPAREN':([3,22,],[4,33,]),'RPAREN':([4,48,49,],[5,57,58,]),'LBRACE':([5,],[6,]),'INT':([6,7,8,9,13,50,52,],[10,10,-3,-4,-2,-5,-23,]),'READ':([6,7,8,9,12,13,14,15,17,18,19,20,28,34,35,45,46,47,50,52,54,55,56,61,62,],[-22,21,-3,-4,21,-2,-9,-10,-11,-12,-13,-14,-8,-21,-29,-15,-24,-25,-5,-23,-16,-27,-26,-20,-28,]),'NUMBER':([6,7,8,9,10,12,13,14,15,17,18,19,20,21,26,28,29,34,35,45,46,47,50,52,54,55,56,61,62,],[-22,16,-3,-4,25,16,-2,-9,-10,-11,-12,-13,-14,31,43,-8,43,-21,-29,-15,-24,-25,-5,-23,-16,-27,-26,-20,-28,]),'PRINTF':([6,7,8,9,12,13,14,15,17,18,19,20,28,34,35,45,46,47,50,52,54,55,56,61,62,],[-22,22,-3,-4,22,-2,-9,-10,-11,-12,-13,-14,-8,-21,-29,-15,-24,-25,-5,-23,-16,-27,-26,-20,-28,]),'END':([6,7,8,9,12,13,14,15,17,18,19,20,28,34,35,45,46,47,50,52,54,55,56,61,62,],[-22,23,-3,-4,23,-2,-9,-10,-11,-12,-13,-14,-8,-21,-29,-15,-24,-25,-5,-23,-16,-27,-26,-20,-28,]),'RBRACE':([6,7,8,9,12,13,14,15,17,18,19,20,28,34,35,45,46,47,50,52,54,55,56,61,62,],[-22,-22,-3,-4,27,-2,-9,-10,-11,-12,-13,-14,-8,-21,-29,-15,-24,-25,-5,-23,-16,-27,-26,-20,-28,]),'EQUALS':([11,16,],[26,29,]),'error':([21,23,26,33,],[32,35,42,49,]),'SEMICOLON':([23,24,25,30,31,32,36,38,39,40,41,42,43,44,51,57,58,59,60,],[34,-22,-22,45,46,47,50,-7,52,-18,54,55,-19,56,-22,61,62,-6,-17,]),'COMA':([24,25,51,],[37,37,37,]),'STRING':([33,],[48,]),'PLUS':([40,],[53,]),}
+_lr_action_items = {'INCLUDE':([0,],[3,]),'$end':([1,7,24,],[0,-1,-4,]),'USING':([2,13,],[5,-2,]),'LESS_THAN':([3,],[6,]),'INT':([4,15,],[8,-3,]),'NAMESPACE':([5,],[9,]),'IOSTREAM':([6,],[10,]),'MAIN':([8,],[11,]),'IDENTIFIER':([9,],[12,]),'GREATER_THAN':([10,],[13,]),'LPAREN':([11,],[14,]),'SEMICOLON':([12,27,28,],[15,29,30,]),'RPAREN':([14,],[16,]),'LBRACE':([16,],[17,]),'COUT':([17,18,19,20,21,25,29,30,],[22,22,-6,-7,-8,-5,-10,-9,]),'RETURN':([17,18,19,20,21,25,29,30,],[23,23,-6,-7,-8,-5,-10,-9,]),'RBRACE':([18,19,20,21,25,29,30,],[24,-6,-7,-8,-5,-10,-9,]),'DOUBLE_LESS_THAN':([22,],[26,]),'NUMBER':([23,],[27,]),'STRING':([26,],[28,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'programa':([0,],[1,]),'declaraciones':([6,],[7,]),'declaracion':([6,7,],[8,13,]),'empty':([6,7,24,25,51,],[9,15,38,38,38,]),'instrucciones':([7,],[12,]),'instruccion':([7,12,],[14,28,]),'lectura':([7,12,],[17,17,]),'asignacion':([7,12,],[18,18,]),'impresion':([7,12,],[19,19,]),'fin':([7,12,],[20,20,]),'lista_identificadores':([24,25,51,],[36,39,59,]),'expresion':([26,29,],[41,44,]),}
+_lr_goto_items = {'programa':([0,],[1,]),'include':([0,],[2,]),'using':([2,],[4,]),'funcion_main':([4,],[7,]),'instrucciones':([17,],[18,]),'instruccion':([17,18,],[19,25,]),'impresion':([17,18,],[20,20,]),'retorno':([17,18,],[21,21,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,33 +27,14 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> programa","S'",1,None,None,None),
-  ('programa -> PROGRAMA IDENTIFIER LPAREN RPAREN LBRACE declaraciones instrucciones RBRACE','programa',8,'p_programa','combined.py',39),
-  ('declaraciones -> declaraciones declaracion','declaraciones',2,'p_declaraciones','combined.py',45),
-  ('declaraciones -> declaracion','declaraciones',1,'p_declaraciones','combined.py',46),
-  ('declaraciones -> empty','declaraciones',1,'p_declaraciones','combined.py',47),
-  ('declaracion -> INT IDENTIFIER lista_identificadores SEMICOLON','declaracion',4,'p_declaracion','combined.py',54),
-  ('lista_identificadores -> COMA IDENTIFIER lista_identificadores','lista_identificadores',3,'p_lista_identificadores','combined.py',58),
-  ('lista_identificadores -> empty','lista_identificadores',1,'p_lista_identificadores','combined.py',59),
-  ('instrucciones -> instrucciones instruccion','instrucciones',2,'p_instrucciones','combined.py',66),
-  ('instrucciones -> instruccion','instrucciones',1,'p_instrucciones','combined.py',67),
-  ('instrucciones -> empty','instrucciones',1,'p_instrucciones','combined.py',68),
-  ('instruccion -> lectura','instruccion',1,'p_instruccion','combined.py',75),
-  ('instruccion -> asignacion','instruccion',1,'p_instruccion','combined.py',76),
-  ('instruccion -> impresion','instruccion',1,'p_instruccion','combined.py',77),
-  ('instruccion -> fin','instruccion',1,'p_instruccion','combined.py',78),
-  ('lectura -> READ IDENTIFIER SEMICOLON','lectura',3,'p_lectura','combined.py',82),
-  ('asignacion -> IDENTIFIER EQUALS expresion SEMICOLON','asignacion',4,'p_asignacion','combined.py',86),
-  ('expresion -> IDENTIFIER PLUS IDENTIFIER','expresion',3,'p_expresion','combined.py',90),
-  ('expresion -> IDENTIFIER','expresion',1,'p_expresion','combined.py',91),
-  ('expresion -> NUMBER','expresion',1,'p_expresion','combined.py',92),
-  ('impresion -> PRINTF LPAREN STRING RPAREN SEMICOLON','impresion',5,'p_impresion','combined.py',99),
-  ('fin -> END SEMICOLON','fin',2,'p_fin','combined.py',103),
-  ('empty -> <empty>','empty',0,'p_empty','combined.py',107),
-  ('declaracion -> INT NUMBER lista_identificadores SEMICOLON','declaracion',4,'p_declaracion_error','combined.py',111),
-  ('lectura -> READ NUMBER SEMICOLON','lectura',3,'p_lectura_error','combined.py',115),
-  ('lectura -> READ error SEMICOLON','lectura',3,'p_lectura_error','combined.py',116),
-  ('asignacion -> NUMBER EQUALS expresion SEMICOLON','asignacion',4,'p_asignacion_error','combined.py',123),
-  ('asignacion -> IDENTIFIER EQUALS error SEMICOLON','asignacion',4,'p_asignacion_error','combined.py',124),
-  ('impresion -> PRINTF LPAREN error RPAREN SEMICOLON','impresion',5,'p_impresion_error','combined.py',131),
-  ('fin -> END error','fin',2,'p_fin_error','combined.py',135),
+  ('programa -> include using funcion_main','programa',3,'p_programa','combined.py',76),
+  ('include -> INCLUDE LESS_THAN IOSTREAM GREATER_THAN','include',4,'p_include','combined.py',82),
+  ('using -> USING NAMESPACE IDENTIFIER SEMICOLON','using',4,'p_using','combined.py',86),
+  ('funcion_main -> INT MAIN LPAREN RPAREN LBRACE instrucciones RBRACE','funcion_main',7,'p_funcion_main','combined.py',90),
+  ('instrucciones -> instrucciones instruccion','instrucciones',2,'p_instrucciones','combined.py',94),
+  ('instrucciones -> instruccion','instrucciones',1,'p_instrucciones','combined.py',95),
+  ('instruccion -> impresion','instruccion',1,'p_instruccion','combined.py',102),
+  ('instruccion -> retorno','instruccion',1,'p_instruccion','combined.py',103),
+  ('impresion -> COUT DOUBLE_LESS_THAN STRING SEMICOLON','impresion',4,'p_impresion','combined.py',107),
+  ('retorno -> RETURN NUMBER SEMICOLON','retorno',3,'p_retorno','combined.py',111),
 ]
